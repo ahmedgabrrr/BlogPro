@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
+
 
 export const metadata: Metadata = {
     title: "Blog Page | Articles",
@@ -40,7 +40,7 @@ async function LoadingBlog() {
     cacheLife("hours")
     cacheTag("blog")
 
-    const posts = await fetchQuery(api.posts.getPosts);
+    const posts = await fetchQuery(api.posts.getPosts, {});
 
     return <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
         {posts?.map((post) => (
