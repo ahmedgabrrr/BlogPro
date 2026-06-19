@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 
 
 export const metadata: Metadata = {
@@ -35,10 +36,12 @@ export default function BlogPage() {
 }
 
 async function LoadingBlog() {
-    "use cache"
+    // "use cache"
 
-    cacheLife("hours")
-    cacheTag("blog")
+    // cacheLife("hours")
+    // cacheTag("blog")
+
+    await connection();
 
     const posts = await fetchQuery(api.posts.getPosts, {});
 
