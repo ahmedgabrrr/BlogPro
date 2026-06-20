@@ -6,7 +6,6 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -15,7 +14,7 @@ import { Loader2 } from "lucide-react";
 
 export default function SignUpPage() {
 	const [isPending, startTransition] = useTransition();
-	const router = useRouter();
+
 	const form = useForm({
 		resolver: zodResolver(SignUpSchema),
 		defaultValues: {
@@ -24,6 +23,7 @@ export default function SignUpPage() {
 			password: "",
 		},
 	});
+
 	async function onSubmit(data: z.infer<typeof SignUpSchema>) {
 		startTransition(async () => {
 			await authClient.signUp.email({
@@ -32,15 +32,15 @@ export default function SignUpPage() {
 				name: data.name,
 				fetchOptions: {
 					onSuccess: () => {
-						toast.success("Account created successfully")
-						router.push("/")
+						toast.success("Account created successfully");
+						window.location.href = "/blog";
 					},
 					onError: (error) => {
-						toast.error(error.error.message)
+						toast.error(error.error.message || "Something went wrong");
 					}
 				}
 			});
-		})
+		});
 	}
 
 	return (
@@ -73,7 +73,7 @@ export default function SignUpPage() {
 								<FieldError errors={[fieldState.error]} />
 							)}
 						</Field>} />
-						<Button disabled={isPending}>{isPending ? (
+						<Button type="submit" disabled={isPending}>{isPending ? (
 							<>
 								<Loader2 className="animate-spin size-4" />
 							</>
@@ -82,5 +82,5 @@ export default function SignUpPage() {
 				</form>
 			</CardContent>
 		</Card>
-	)
+	);
 }

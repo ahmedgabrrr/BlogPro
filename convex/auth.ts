@@ -28,7 +28,14 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
     ],
     trustedOrigins: [
       "https://blog-pro-x7zh.vercel.app"
-    ]
+    ],
+    crossDomain: {
+      enabled: true,
+    },
+    cookie: {
+      sameSite: "none",
+      secure: true,
+    }
   })
 }
 
